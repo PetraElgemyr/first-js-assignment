@@ -74,12 +74,15 @@ function showMyTodos(content) {
       // console.log(listOfRemovedThings);
 
       let liWithRemovedItems = document.createElement("li"); //skapa ny li-tag utanför loop, för varje klick skapas det ny li
-
+      let reverseBtn = document.createElement("button");
+      reverseBtn.type = "button";
+      reverseBtn.innerHTML = "&#8617";
       for (let i = 0; i < removedTodoList.length; i++) {
         liWithRemovedItems.innerHTML = removedTodoList[i].item;
+        liWithRemovedItems.appendChild(reverseBtn);
         ulWithRemovedItems.appendChild(liWithRemovedItems);
       }
-      liWithRemovedItems.className = "deletedThing";
+      liWithRemovedItems.className = "deletedThing"; // Fixa så att styling o classname behålls från tidigare, något med true/false
     });
   } else {
     alert("Skriv in något att lägga till innan du klickar!"); //Sorry, kommer bara avnvända alert här för att få fram en tydlig varning. Aldrig mer :)
