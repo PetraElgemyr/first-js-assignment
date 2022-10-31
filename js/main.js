@@ -29,6 +29,7 @@ function showMyTodos(content) {
   let inputTag = document.getElementById("newItem"); //hitta min input, behövs ej men ha kvar
   let myLiTag = document.createElement("li");
   let removeItemBtn = document.createElement("button");
+  let ulWithRemovedItems = document.getElementById("removedItemsList");
 
   if (content !== "") {
     myLiTag.className = "myTodoItem";
@@ -37,7 +38,12 @@ function showMyTodos(content) {
     totalTodoList.push(newTodoObject); //här läggs det till objekt newTodoObject i min lista [newTodoObject, newTodoObject,...]
     console.log(totalTodoList);
 
+    let spanInLi = document.createElement("span");
+
     myLiTag.innerHTML = content;
+    myLiTag.addEventListener("click", () => {
+      checkedItem(myLiTag);
+    });
 
     removeItemBtn.type = "button";
     removeItemBtn.className = "removeBtn";
@@ -47,9 +53,6 @@ function showMyTodos(content) {
     myLiTag.appendChild(removeItemBtn);
 
     //Om man klickar på li-tagen för att markera klar
-    myLiTag.addEventListener("click", () => {
-      checkedItem(myLiTag);
-    });
 
     removeItemBtn.addEventListener("click", () => {
       let deleteItem = removeItemBtn.parentElement; //här är den specifika knappens förälder, dvs den li-tagen
@@ -70,14 +73,13 @@ function showMyTodos(content) {
       // );
       // console.log(listOfRemovedThings);
 
-      let ulWithRemovedItems = document.createElement("ul");
       let liWithRemovedItems = document.createElement("li"); //skapa ny li-tag utanför loop, för varje klick skapas det ny li
 
       for (let i = 0; i < removedTodoList.length; i++) {
         liWithRemovedItems.innerHTML = removedTodoList[i].item;
-        myContainerDiv.appendChild(ulWithRemovedItems);
         ulWithRemovedItems.appendChild(liWithRemovedItems);
       }
+      liWithRemovedItems.className = "deletedThing";
     });
   } else {
     alert("Skriv in något att lägga till innan du klickar!"); //Sorry, kommer bara avnvända alert här för att få fram en tydlig varning. Aldrig mer :)

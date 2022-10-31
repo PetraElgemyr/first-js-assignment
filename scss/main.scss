@@ -16,7 +16,8 @@ body {
     margin-bottom: 10px;
   }
 
-  #myList {
+  #myList,
+  #removedItemsList {
     // background-color: cadetblue;
     display: flex;
     flex-direction: column;
@@ -45,5 +46,27 @@ body {
 
       text-decoration: line-through;
     }
+
+    .removeBtn {
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      &:hover {
+        background-color: rgb(87, 39, 39);
+        color: white;
+      }
+    }
+  }
+
+  .deletedThing {
+    margin: 1%;
+    padding: 2%;
+    background-color: rgba(147, 116, 146, 0.903);
+    width: 60vw;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    list-style: none;
   }
 }
