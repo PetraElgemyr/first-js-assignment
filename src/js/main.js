@@ -55,34 +55,50 @@ function showMyTodos(content) {
     //Om man klickar på li-tagen för att markera klar
 
     removeItemBtn.addEventListener("click", () => {
-      let deleteItem = removeItemBtn.parentElement; //här är den specifika knappens förälder, dvs den li-tagen
-      deleteItem.remove(); //ta bort li-tag
-      deleteItem.removeChild(deleteItem.lastChild); //tar bort kryssknapp
-      console.log(deleteItem.innerHTML); //skriver ut texten utan kryssknappen i console
-
-      // let thingy = deleteItem.innerText;
-      // console.log(thingy);
-      let newRemovedObjects = new Todo(deleteItem.innerText, false, false);
-
-      removedTodoList.push(newRemovedObjects); //lägger till nya objektet av raderad punkt i listan med borttagna saker
-
-      // localStorage.setItem("thingsRemoved", JSON.stringify(removedTodoList));
-
-      // let listOfRemovedThings = JSON.parse(
-      //   localStorage.getItem("thingsRemoved")
-      // );
-      // console.log(listOfRemovedThings);
-
-      let liWithRemovedItems = document.createElement("li"); //skapa ny li-tag utanför loop, för varje klick skapas det ny li
+      newTodoObject.removed = true;
       let reverseBtn = document.createElement("button");
-      reverseBtn.type = "button";
-      reverseBtn.innerHTML = "&#8617";
-      for (let i = 0; i < removedTodoList.length; i++) {
-        liWithRemovedItems.innerHTML = removedTodoList[i].item;
-        liWithRemovedItems.appendChild(reverseBtn);
-        ulWithRemovedItems.appendChild(liWithRemovedItems);
+
+      if (newTodoObject.removed === true) {
+        let deleteItem = removeItemBtn.parentElement; //här är den specifika knappens förälder, dvs den li-tagen
+        deleteItem.remove(); //ta bort li-tag
+        deleteItem.removeChild(deleteItem.lastChild); //tar bort kryssknapp
+        console.log(deleteItem.innerHTML + " tas bort från todo-listan"); //skriver ut texten utan kryssknappen i console
+
+        let newRemovedObjects = new Todo(deleteItem.innerText, false, true);
+
+        removedTodoList.push(newRemovedObjects); //lägger till nya objektet av raderad punkt i listan med borttagna saker
+
+        let liWithRemovedItems = document.createElement("li"); //skapa ny li-tag utanför loop, för varje klick skapas det ny li
+        reverseBtn.type = "button";
+        reverseBtn.innerHTML = "&#8617";
+
+        for (let i = 0; i < removedTodoList.length; i++) {
+          liWithRemovedItems.innerHTML = removedTodoList[i].item;
+          liWithRemovedItems.appendChild(reverseBtn);
+          ulWithRemovedItems.appendChild(liWithRemovedItems);
+        }
+        liWithRemovedItems.className = "deletedThing"; // Fixa så att styling o classname behålls från tidigare, något med true/false
+        console.log(removedTodoList);
+      } else {
+        console.log("remove = false");
       }
-      liWithRemovedItems.className = "deletedThing"; // Fixa så att styling o classname behålls från tidigare, något med true/false
+
+      reverseBtn.addEventListener("click", () => {
+        newTodoObject.removed = false;
+
+        let bringBackItem = reverseBtn.parentElement; //li-tagen som ligger i borttagna saker
+        bringBackItem.remove(); //li-tag tas bort från ul-listan
+        bringBackItem.removeChild(bringBackItem.lastChild); //tar bort reverse button
+        console.log(bringBackItem.innerHTML + " läggs tillbaka i todo-listan");
+        let broughtBackItems = new Todo(bringBackItem.innerText, false, false);
+        removedTodoList.pop(broughtBackItems); //ta bort sista objekt
+        totalTodoList.push(broughtBackItems); //lägger till objektet på todo-list igen.
+
+        console.log(totalTodoList);
+        console.log(removedTodoList);
+        showMyTodos(bringBackItem.innerHTML); //skicka tillbaka texten på li-tagen som ska reversas
+        // pop  let newTodoObject = new Todo(content, false, false);
+      });
     });
   } else {
     alert("Skriv in något att lägga till innan du klickar!"); //Sorry, kommer bara avnvända alert här för att få fram en tydlig varning. Aldrig mer :)
@@ -101,14 +117,6 @@ function addItemToList() {
 
 function checkedItem(liTag) {
   let myLiTag = liTag;
+
   myLiTag.classList.toggle("__checked");
 }
-
-// function removeItemFromList(btn, anObject, list) {
-//   let removeItemBtn = btn;
-//   let removedThing = removeItemBtn.parent;
-
-//   if ((anObject.removed = true)) {
-//     removeItemBtn.classList.toggle;
-//   }
-// }
